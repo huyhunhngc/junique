@@ -1,9 +1,36 @@
 plugins {
     id 'java'
+    id("maven-publish")
 }
 
 group = 'io.github.ifa'
 version = '1.0-SNAPSHOT'
+
+java {
+    publishing {
+
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/huyhunhngc/junique")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.token") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        release(MavenPublication) {
+            from(components.java)
+            groupId "huyhunhngc"
+            artifactId "junique"
+        }
+    }
+}
 
 repositories {
     mavenCentral()
